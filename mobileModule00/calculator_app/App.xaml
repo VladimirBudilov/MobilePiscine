@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:calculator_app"
+             x:Class="calculator_app.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <Color x:Key="ButtonBackgroundColor">LightGray</Color>
+            <Color x:Key="OperatorButtonBackgroundColor">OrangeRed</Color>
+
+            <Color x:Key="ButtonTextColor">Black</Color>
+            <Color x:Key="OperatorButtonTextColor">White</Color>
+
+            <Style TargetType="Button">
+                <Setter Property="FontFamily" Value="Arial" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="CornerRadius" Value="0" />
+                <Setter Property="BackgroundColor" Value="{StaticResource ButtonBackgroundColor}" />
+                <Setter Property="TextColor" Value="{StaticResource ButtonTextColor}" />
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
