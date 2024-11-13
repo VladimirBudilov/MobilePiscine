@@ -55,8 +55,8 @@ class _WeatherHomePageState extends State<WeatherHomePage> with SingleTickerProv
     return Scaffold(
       appBar: AppBar(
         title: CitySearchField(
-          onSubmitted: (city) {
-            setState(() => _displayText = city);
+          onCitySelected: (city) {
+            //here we will fetch weather data for the selected city
           },
         ),
         actions: [
