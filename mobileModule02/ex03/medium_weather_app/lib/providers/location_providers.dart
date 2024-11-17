@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/geolocation_service.dart';
 import '../models/location_status_model.dart';
 import '../models/city_model.dart';
+import '../services/geocoding_service.dart';
 
 final selectedCityProvider = StateProvider<City?>((ref) => null);
 
@@ -18,11 +19,12 @@ class LocationStatusNotifier extends StateNotifier<LocationStatus> {
     state = LocationStatus(status: status, isLoading: false);
   }
 
-  Future<void> useGeolocation() async {
+  Future<void> useGeolocation(WidgetRef ref) async {
+    await checkLocationPermission();  
     state = LocationStatus(status: 'Loading...', isLoading: true);
     final position = await GeolocationService.getCurrentLocation();
     if (position != null) {
-      // Здесь можно обновить город и погоду, если геолокация успешна
+      ref.read(selectedCityProvider.notifier).state = await GeocodingService.getCityFromLocation(position.latitude, position.longitude);
     }
     state = LocationStatus(status: 'Loaded', isLoading: false);
   }

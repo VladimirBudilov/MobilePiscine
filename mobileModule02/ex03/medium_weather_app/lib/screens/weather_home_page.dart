@@ -39,7 +39,9 @@ class _WeatherHomePageState extends ConsumerState<WeatherHomePage> with SingleTi
         actions: [
           IconButton(
             icon: const Icon(Icons.my_location),
-            onPressed: () => ref.read(locationStatusProvider.notifier).checkLocationPermission(),
+            onPressed: () => {
+              ref.read(locationStatusProvider.notifier).useGeolocation(ref),
+            }
           ),
         ],
       ),

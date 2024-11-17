@@ -5,8 +5,6 @@ import '../models/weather/hourly_weather.dart';
 import '../models/weather/daily_weather.dart';
 import 'location_providers.dart';
 
-final weatherServiceProvider = Provider((ref) => WeatherService());
-
 final currentWeatherProvider = FutureProvider<CurrentWeather>((ref) async {
   final selectedCity = ref.watch(selectedCityProvider);
 

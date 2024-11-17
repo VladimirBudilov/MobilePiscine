@@ -25,7 +25,6 @@ class _CitySearchFieldState extends ConsumerState<CitySearchField> {
       return;
     }
 
-
     try {
       final results = await GeocodingService.fetchCitySuggestions(query);
       setState(() {

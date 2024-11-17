@@ -33,4 +33,22 @@ class GeocodingService {
       throw Exception('Failed to load city coordinates');
     }
   }
+
+  static Future<City> getCityFromLocation(double lat, double lon) async {
+    final response = await http.get(
+      Uri.parse('https://nominatim.openstreetmap.org/reverse?lat=$lat&lon=$lon&format=json'),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      var city = City(
+        name: data['address']['city'],
+        region: data['address']['state'],
+        country: data['address']['country'],
+        latitude: lat, longitude: lon);
+      return city;
+    } else {
+      throw Exception('Failed to load city name');
+    }
+  }
 }
