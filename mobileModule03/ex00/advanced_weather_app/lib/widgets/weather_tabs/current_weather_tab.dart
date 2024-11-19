@@ -12,19 +12,42 @@ class CurrentWeatherTab extends ConsumerWidget {
     final selectedCity = ref.watch(selectedCityProvider);
 
     return currentWeather.when(
-      data: (weather) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-              'Location: ${selectedCity?.name ?? "empty"}, ${selectedCity?.region ?? "empty"}, ${selectedCity?.country ?? "empty"}'),
-          Text('Temperature: ${weather.temperature}°C'),
-          Text('Description: ${weather.weatherDescription}'),
-          Text('Wind Speed: ${weather.windSpeed} km/h'),
-        ],
-      ),
-      loading: () => CircularProgressIndicator(),
-      error: (e, _) => Text(e.toString().replaceFirst('Exception: ', ''),
-          style: TextStyle(color: Colors.red)),
-    );
+        data: (weather) {
+          if (weather == null) {
+            return Center(
+              child: Text(
+                "Invalid City was selected. Please select a valid city.",
+                style: TextStyle(fontSize: 16),
+              ),
+            );
+          }
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ...[
+                Text(
+                    'Location: ${selectedCity?.name ?? "Unknown"}, ${selectedCity?.region ?? "Unknown"}, ${selectedCity?.country ?? "Unknown"}'),
+                Text('Temperature: ${weather.temperature}°C'),
+                Text('Description: ${weather.weatherDescription}'),
+                Text('Wind Speed: ${weather.windSpeed} km/h'),
+              ],
+            ],
+          );
+        },
+        loading: () => CircularProgressIndicator(),
+        error: (e, _) {
+          ref.read(appStatusProvider.notifier).setErrorStatus("$e");
+          return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ...[
+                  Text(
+                      'Location: ${selectedCity?.name ?? "Unknown"}, ${selectedCity?.region ?? "Unknown"}, ${selectedCity?.country ?? "Unknown"}'),
+                  Text('Temperature:Unknown'),
+                  Text('Description: Unknown'),
+                  Text('Wind Speed: Unknown'),
+                ]
+              ]);
+        });
   }
 }

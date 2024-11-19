@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/city_model.dart';
+import '../models/app_status_model.dart';
 import '../providers/location_providers.dart';
 import '../services/geocoding_service.dart';
 
@@ -107,6 +108,10 @@ class _CitySearchFieldState extends ConsumerState<CitySearchField> {
       setState(() {
         _suggestions = [];
       });
+      ref.read(selectedCityProvider.notifier).state = null;
+      ref
+          .read(appStatusProvider.notifier)
+          .setErrorStatus(e.toString().replaceFirst('Exception: ', ''));
       _removeOverlay();
     }
   }
@@ -137,11 +142,18 @@ class _CitySearchFieldState extends ConsumerState<CitySearchField> {
   }
 
   void _updateCity() async {
-    if ((await GeocodingService.getCoordinates(_controller.text)) == null) {
+    try {
+      if ((await GeocodingService.getCoordinates(_controller.text)) == null) {
+        ref.read(selectedCityProvider.notifier).state = null;
+      } else {
+        ref.read(selectedCityProvider.notifier).state =
+            await GeocodingService.getCoordinates(_controller.text);
+      }
+    } catch (e) {
       ref.read(selectedCityProvider.notifier).state = null;
-    } else {
-      ref.read(selectedCityProvider.notifier).state =
-          await GeocodingService.getCoordinates(_controller.text);
+      ref
+          .read(appStatusProvider.notifier)
+          .setErrorStatus(e.toString().replaceFirst('Exception: ', ''));
     }
   }
 }

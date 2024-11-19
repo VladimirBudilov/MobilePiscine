@@ -4,51 +4,32 @@ import '../models/weather/current_weather.dart';
 import '../models/weather/hourly_weather.dart';
 import '../models/weather/daily_weather.dart';
 import 'location_providers.dart';
-import 'network_status_provider.dart';
 
-final currentWeatherProvider = FutureProvider<CurrentWeather>((ref) async {
+final currentWeatherProvider = FutureProvider<CurrentWeather?>((ref) async {
   final selectedCity = ref.watch(selectedCityProvider);
-  final isConnected = await ref.watch(internetStatusProvider.future);
-
-  if (!isConnected) {
-    throw Exception("No internet connection. Please check your internet.");
-  }
 
   if (selectedCity != null) {
     return await WeatherService.getCurrentWeather(selectedCity);
   }
-
-  throw Exception("Invalid city name. Please try something else.");
+  return null;
 });
 
 final todayWeatherProvider = FutureProvider<List<HourlyWeather>>((ref) async {
   final selectedCity = ref.watch(selectedCityProvider);
-  final isConnected = await ref.watch(internetStatusProvider.future);
-
-  if (!isConnected) {
-    throw Exception("No internet connection. Please check your internet.");
-  }
 
   if (selectedCity != null) {
     return await WeatherService.getTodayWeather(
         selectedCity.latitude, selectedCity.longitude);
   }
-
-  throw Exception("Invalid city name. Please try something else.");
+  return [];
 });
 
 final weeklyWeatherProvider = FutureProvider<List<DailyWeather>>((ref) async {
   final selectedCity = ref.watch(selectedCityProvider);
-  final isConnected = await ref.watch(internetStatusProvider.future);
-
-  if (!isConnected) {
-    throw Exception("No internet connection. Please check your internet.");
-  }
 
   if (selectedCity != null) {
     return await WeatherService.getWeeklyWeather(
         selectedCity.latitude, selectedCity.longitude);
   }
-
-  throw Exception("Invalid city name. Please try something else.");
+  return [];
 });

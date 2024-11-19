@@ -35,6 +35,7 @@ class _WeatherHomePageState extends ConsumerState<WeatherHomePage>
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: SafeArea(
           top: true,
+          minimum: const EdgeInsets.only(top: 26.0),
           child: AppBar(
             title: CitySearchField(
               onCitySelected: (city) {
@@ -45,7 +46,7 @@ class _WeatherHomePageState extends ConsumerState<WeatherHomePage>
               IconButton(
                 icon: const Icon(Icons.my_location),
                 onPressed: () => {
-                  ref.read(locationStatusProvider.notifier).useGeolocation(ref),
+                  ref.read(appStatusProvider.notifier).useGeolocation(ref),
                 },
               ),
             ],

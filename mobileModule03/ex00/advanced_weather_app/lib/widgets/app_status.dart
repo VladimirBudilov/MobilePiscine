@@ -14,7 +14,7 @@ class AppStatusWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final locationStatus = ref.watch(locationStatusProvider);
+    final locationStatus = ref.watch(appStatusProvider);
 
     final internetStatus = ref.watch(internetStatusProvider);
 
