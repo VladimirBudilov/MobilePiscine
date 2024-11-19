@@ -5,35 +5,31 @@ import '../models/weather/hourly_weather.dart';
 import '../models/weather/daily_weather.dart';
 import 'location_providers.dart';
 
-final currentWeatherProvider = FutureProvider<CurrentWeather>((ref) async {
+final currentWeatherProvider = FutureProvider<CurrentWeather?>((ref) async {
   final selectedCity = ref.watch(selectedCityProvider);
 
   if (selectedCity != null) {
     return await WeatherService.getCurrentWeather(selectedCity);
   }
-  
-  throw Exception("City not selected");
+  return null;
 });
 
 final todayWeatherProvider = FutureProvider<List<HourlyWeather>>((ref) async {
   final selectedCity = ref.watch(selectedCityProvider);
 
   if (selectedCity != null) {
-    return await WeatherService.getTodayWeather(selectedCity.latitude, selectedCity.longitude);
+    return await WeatherService.getTodayWeather(
+        selectedCity.latitude, selectedCity.longitude);
   }
-  
-  throw Exception("City not selected");
+  return [];
 });
 
 final weeklyWeatherProvider = FutureProvider<List<DailyWeather>>((ref) async {
   final selectedCity = ref.watch(selectedCityProvider);
 
   if (selectedCity != null) {
-    return await WeatherService.getWeeklyWeather(selectedCity.latitude, selectedCity.longitude);
+    return await WeatherService.getWeeklyWeather(
+        selectedCity.latitude, selectedCity.longitude);
   }
-  
-  throw Exception("City not selected");
+  return [];
 });
-
-
-

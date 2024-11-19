@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/city_model.dart';
+import '../models/app_status_model.dart';
 import '../providers/location_providers.dart';
 import '../services/geocoding_service.dart';
 
@@ -15,10 +16,77 @@ class CitySearchField extends ConsumerStatefulWidget {
 
 class _CitySearchFieldState extends ConsumerState<CitySearchField> {
   final TextEditingController _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
   OverlayEntry? _overlayEntry;
   List<City> _suggestions = [];
+  bool _isCitySelected = false;
+
+  void _onCitySelected(City city) {
+    _isCitySelected = true;
+    widget.onCitySelected(city);
+    _controller.text = city.name;
+    _removeOverlay();
+    ref.read(selectedCityProvider.notifier).state = city;
+    Future.delayed(const Duration(milliseconds: 100), () {
+      _isCitySelected = false;
+    });
+  }
+
+  Widget _buildSuggestionList() {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: _suggestions.length,
+      itemBuilder: (context, index) {
+        final city = _suggestions[index];
+        return ListTile(
+          title: Text(city.name),
+          subtitle: Text('${city.region}, ${city.country}'),
+          onTap: () => _onCitySelected(city),
+        );
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      _onSearchChanged(_controller.text);
+    });
+
+    _focusNode.addListener(() {
+      if (!_focusNode.hasFocus) {
+        _updateCity();
+        _removeOverlay();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _focusNode.dispose();
+    _removeOverlay();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: _controller,
+      focusNode: _focusNode,
+      decoration: InputDecoration(
+        hintText: 'Enter city name...',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+    );
+  }
 
   void _onSearchChanged(String query) async {
+    if (_isCitySelected) return;
+
     if (query.isEmpty) {
       ref.read(selectedCityProvider.notifier).state = null;
       _removeOverlay();
@@ -30,22 +98,22 @@ class _CitySearchFieldState extends ConsumerState<CitySearchField> {
       setState(() {
         _suggestions = results;
       });
-      ref.read(selectedCityProvider.notifier).state = _suggestions.first;
-      _showOverlay();
+
+      if (_suggestions.isNotEmpty) {
+        _showOverlay();
+      } else {
+        _removeOverlay();
+      }
     } catch (e) {
       setState(() {
         _suggestions = [];
       });
+      ref.read(selectedCityProvider.notifier).state = null;
+      ref
+          .read(appStatusProvider.notifier)
+          .setErrorStatus(e.toString().replaceFirst('Exception: ', ''));
       _removeOverlay();
     }
-  }
-
-  void _onCitySelected(City city) async {
-    widget.onCitySelected(city);
-    _controller.clear();
-    _removeOverlay();
-
-    ref.read(selectedCityProvider.notifier).state = city;
   }
 
   void _showOverlay() {
@@ -73,46 +141,19 @@ class _CitySearchFieldState extends ConsumerState<CitySearchField> {
     _overlayEntry = null;
   }
 
-  Widget _buildSuggestionList() {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: _suggestions.length,
-      itemBuilder: (context, index) {
-        final city = _suggestions[index];
-        return ListTile(
-          title: Text(city.name),
-          subtitle: Text('${city.region}, ${city.country}'),
-          onTap: () => _onCitySelected(city),
-        );
-      },
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _controller.addListener(() {
-      _onSearchChanged(_controller.text);
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    _removeOverlay();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: _controller,
-      decoration: InputDecoration(
-        hintText: 'Enter city name...',
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-      ),
-    );
+  void _updateCity() async {
+    try {
+      if ((await GeocodingService.getCoordinates(_controller.text)) == null) {
+        ref.read(selectedCityProvider.notifier).state = null;
+      } else {
+        ref.read(selectedCityProvider.notifier).state =
+            await GeocodingService.getCoordinates(_controller.text);
+      }
+    } catch (e) {
+      ref.read(selectedCityProvider.notifier).state = null;
+      ref
+          .read(appStatusProvider.notifier)
+          .setErrorStatus(e.toString().replaceFirst('Exception: ', ''));
+    }
   }
 }

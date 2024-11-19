@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../widgets/city_search_field.dart';
-import '../widgets/location_status.dart';
+import '../widgets/app_status.dart';
 import '../widgets/weather_tabs.dart';
 import '../providers/location_providers.dart';
 
@@ -12,7 +12,8 @@ class WeatherHomePage extends ConsumerStatefulWidget {
   ConsumerState<WeatherHomePage> createState() => _WeatherHomePageState();
 }
 
-class _WeatherHomePageState extends ConsumerState<WeatherHomePage> with SingleTickerProviderStateMixin {
+class _WeatherHomePageState extends ConsumerState<WeatherHomePage>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -30,24 +31,32 @@ class _WeatherHomePageState extends ConsumerState<WeatherHomePage> with SingleTi
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: CitySearchField(
-          onCitySelected: (city) {
-            ref.read(selectedCityProvider.notifier).state = city;
-          },
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.my_location),
-            onPressed: () => {
-              ref.read(locationStatusProvider.notifier).useGeolocation(ref),
-            }
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: SafeArea(
+          top: true,
+          minimum: const EdgeInsets.only(top: 26.0),
+          child: AppBar(
+            title: CitySearchField(
+              onCitySelected: (city) {
+                ref.read(selectedCityProvider.notifier).state = city;
+              },
+            ),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.my_location),
+                onPressed: () => {
+                  ref.read(appStatusProvider.notifier).useGeolocation(ref),
+                },
+              ),
+            ],
           ),
-        ],
+        ),
       ),
       body: Column(
         children: [
-          LocationStatusWidget(),
+          const SizedBox(height: 8.0),
+          AppStatusWidget(),
           Expanded(
             child: WeatherTabs(tabController: _tabController),
           ),

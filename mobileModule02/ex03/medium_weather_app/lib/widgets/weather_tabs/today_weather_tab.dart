@@ -13,45 +13,71 @@ class TodayWeatherTab extends ConsumerWidget {
     final hourlyWeather = ref.watch(todayWeatherProvider);
 
     return hourlyWeather.when(
-      data: (hourlyData) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+      data: (hourlyData) {
+        if (hourlyData.isEmpty) {
+          return Center(
             child: Text(
-              '${selectedCity?.name ?? "Unknown City"}, ${selectedCity?.region ?? ""}, ${selectedCity?.country ?? ""}',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              "Invalid City was selected. Please select a valid city.",
+              style: TextStyle(fontSize: 16),
             ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
+          );
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                '${selectedCity?.name ?? "Unknown City"}, ${selectedCity?.region ?? ""}, ${selectedCity?.country ?? ""}',
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Expanded(
               child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: DataTable(
-                  columns: const [
-                    DataColumn(label: Text('Time')),
-                    DataColumn(label: Text('Temp(°C)')),
-                    DataColumn(label: Text('Condition')),
-                    DataColumn(label: Text('Wind')),
-                  ],
-                  rows: hourlyData.map((hourWeather) {
-                    final formattedTime = DateFormat('HH:mm').format(hourWeather.time);
-                    return DataRow(cells: [
-                      DataCell(Text(formattedTime)),
-                      DataCell(Text('${hourWeather.temperature}°C')),
-                      DataCell(Text(hourWeather.weatherDescription)),
-                      DataCell(Text(hourWeather.windSpeed.toString())),
-                    ]);
-                  }).toList(),
+                scrollDirection: Axis.vertical,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: DataTable(
+                    columns: const [
+                      DataColumn(label: Text('Time')),
+                      DataColumn(label: Text('Temp(°C)')),
+                      DataColumn(label: Text('Condition')),
+                      DataColumn(label: Text('Wind')),
+                    ],
+                    rows: hourlyData.map((hourWeather) {
+                      final formattedTime =
+                          DateFormat('HH:mm').format(hourWeather.time);
+                      return DataRow(cells: [
+                        DataCell(Text(formattedTime)),
+                        DataCell(Text('${hourWeather.temperature}°C')),
+                        DataCell(Text(hourWeather.weatherDescription)),
+                        DataCell(Text(hourWeather.windSpeed.toString())),
+                      ]);
+                    }).toList(),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+      },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('Error: $e')),
+      error: (e, _) {
+        ref.read(appStatusProvider.notifier).setErrorStatus("$e");
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "$e",
+                style: TextStyle(fontSize: 14),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
