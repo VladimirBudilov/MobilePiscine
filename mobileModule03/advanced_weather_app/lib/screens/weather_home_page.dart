@@ -34,24 +34,22 @@ class _WeatherHomePageState extends ConsumerState<WeatherHomePage>
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: SafeArea(
-          top: true,
-          minimum: const EdgeInsets.only(top: 26.0),
-          child: AppBar(
-            title: CitySearchField(
-              onCitySelected: (city) {
-                ref.read(selectedCityProvider.notifier).state = city;
-              },
-            ),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.my_location),
-                onPressed: () => {
-                  ref.read(appStatusProvider.notifier).useGeolocation(ref),
+            child: AppBar(
+              title: CitySearchField(
+                onCitySelected: (city) {
+                  ref.read(selectedCityProvider.notifier).state = city;
                 },
               ),
-            ],
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.my_location),
+                  onPressed: () => {
+                    ref.read(appStatusProvider.notifier).useGeolocation(ref),
+                  },
+                ),
+              ],
+            ),
           ),
-        ),
       ),
       body: Column(
         children: [

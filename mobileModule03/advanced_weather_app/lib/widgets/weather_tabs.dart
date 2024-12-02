@@ -11,10 +11,14 @@ class WeatherTabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/background.avif"), 
-          fit: BoxFit.cover, 
+          image: AssetImage("assets/background.avif"),
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(
+            Colors.black.withOpacity(0.4), // Adjust the opacity as needed
+            BlendMode.dstATop,
+          ),
         ),
       ),
       child: TabBarView(

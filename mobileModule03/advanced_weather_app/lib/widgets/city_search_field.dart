@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/city_model.dart';
-import '../models/app_status_model.dart';
 import '../providers/location_providers.dart';
 import '../services/geocoding_service.dart';
 

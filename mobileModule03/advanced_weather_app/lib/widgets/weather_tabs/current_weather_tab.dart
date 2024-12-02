@@ -25,48 +25,47 @@ class CurrentWeatherTab extends ConsumerWidget {
               ),
             );
           }
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Location
-              Text(
-                '${selectedCity?.name ?? "Unknown"}, ${selectedCity?.region ?? "Unknown"}, ${selectedCity?.country ?? "Unknown"}',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 8),
-              // Weather Icon and Temperature
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.network(
-                    getWeatherIcon(weather.weatherCode),
-                    width: 64,
-                    height: 64,
-                    errorBuilder: (context, error, stackTrace) => Icon(Icons.cloud, size: 64),
-                  ),
-                  SizedBox(width: 16),
-                  Text(
-                    '${weather.temperature}°C',
-                    style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: Colors.blue),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
-              // Description
-              Text(
-                weather.weatherDescription,
-                style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 16),
-              // Wind Speed
-              Text(
-                'Wind Speed: ${weather.windSpeed} km/h',
-                style: TextStyle(fontSize: 16, color: Colors.grey[700]),
-              ),
-            ],
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Location
+                Text(
+                  '${selectedCity?.name ?? "Unknown"}, ${selectedCity?.region ?? "Unknown"}, ${selectedCity?.country ?? "Unknown"}',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.network(
+                      getWeatherIcon(weather.weatherCode),
+                      width: 128,
+                      height: 128,
+                      errorBuilder: (context, error, stackTrace) => Icon(Icons.cloud, size: 64),
+                    ),
+                    SizedBox(width: 16),
+                    Text(
+                      '${weather.temperature}°C',
+                      style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 28, 122, 204)),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8),
+                Text(
+                  weather.weatherDescription,
+                  style: TextStyle(fontSize: 32, fontStyle: FontStyle.italic),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Wind Speed: ${weather.windSpeed} km/h',
+                  style: TextStyle(fontSize: 24, color: const Color.fromARGB(255, 162, 68, 28)),
+                ),
+              ],
+            ),
           );
         },
         loading: () => Center(

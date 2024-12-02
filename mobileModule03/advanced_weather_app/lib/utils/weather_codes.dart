@@ -1,8 +1,8 @@
 final Map<int, String> weatherDescriptions = {
   0: "Clear sky",
-  1: "Mainly clear, partly cloudy, or overcast",
-  2: "Mainly clear, partly cloudy, or overcast",
-  3: "Mainly clear, partly cloudy, or overcast",
+  1: "Mainly clear",
+  2: "Mainly clear",
+  3: "Mainly clear",
   45: "Fog",
   48: "Depositing rime fog",
   51: "Light drizzle",
@@ -24,7 +24,7 @@ final Map<int, String> weatherDescriptions = {
   82: "Violent rain showers",
   85: "Slight snow showers",
   86: "Heavy snow showers",
-  95: "Thunderstorm: Slight or moderate",
+  95: "Thunderstorm",
   96: "Thunderstorm with slight hail",
   99: "Thunderstorm with heavy hail",
 };
