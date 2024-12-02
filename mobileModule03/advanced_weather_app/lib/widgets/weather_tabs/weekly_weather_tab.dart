@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../providers/weather_providers.dart';
 import '../../providers/location_providers.dart';
+import '../../utils/weather_icons.dart';
 
 class WeeklyWeatherTab extends ConsumerWidget {
   const WeeklyWeatherTab({super.key});
@@ -26,6 +28,7 @@ class WeeklyWeatherTab extends ConsumerWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Город, регион, страна
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -34,21 +37,101 @@ class WeeklyWeatherTab extends ConsumerWidget {
                     const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
-            Expanded(
+            // График
+            SizedBox(
+              height: 250,
+              child: SfCartesianChart(
+                primaryXAxis: CategoryAxis(
+                  title: AxisTitle(
+                    text: 'Days of the Week',
+                    textStyle: TextStyle(color: Colors.black54),
+                  ),
+                ),
+                primaryYAxis: NumericAxis(
+                  title: AxisTitle(
+                    text: 'Temperature (°C)',
+                    textStyle: TextStyle(color: Colors.black54),
+                  ),
+                  minimum: weeklyData
+                          .map((data) => data.temperatureMin)
+                          .reduce((a, b) => a < b ? a : b) -
+                      5,
+                  maximum: weeklyData
+                          .map((data) => data.temperatureMax)
+                          .reduce((a, b) => a > b ? a : b) +
+                      5,
+                ),
+                series: <ChartSeries>[
+                  LineSeries<dynamic, String>(
+                    name: 'Min Temp',
+                    dataSource: weeklyData,
+                    xValueMapper: (data, _) =>
+                        DateFormat('EEEE').format(data.date),
+                    yValueMapper: (data, _) => data.temperatureMin,
+                    color: Colors.blue,
+                    width: 2,
+                    markerSettings: MarkerSettings(isVisible: true),
+                  ),
+                  LineSeries<dynamic, String>(
+                    name: 'Max Temp',
+                    dataSource: weeklyData,
+                    xValueMapper: (data, _) =>
+                        DateFormat('EEEE').format(data.date),
+                    yValueMapper: (data, _) => data.temperatureMax,
+                    color: Colors.red,
+                    width: 2,
+                    markerSettings: MarkerSettings(isVisible: true),
+                  ),
+                ],
+                legend: Legend(isVisible: true),
+              ),
+            ),
+            const SizedBox(height: 8),
+            // Прокручиваемый горизонтально список
+            SizedBox(
+              height: 160,
               child: ListView.builder(
+                scrollDirection: Axis.horizontal,
                 itemCount: weeklyData.length,
                 itemBuilder: (context, index) {
                   final daily = weeklyData[index];
-                  final formattedDate =
-                      DateFormat('EEEE, MMM d').format(daily.date);
+                  final formattedDay = DateFormat('EEEE').format(daily.date);
 
-                  return Card(
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 16.0),
-                    child: ListTile(
-                      title: Text(formattedDate),
-                      subtitle: Text(
-                        'Min: ${daily.temperatureMin}°C, Max: ${daily.temperatureMax}°C\n${daily.weatherDescription}',
+                  return Container(
+                    width: 120,
+                    margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              formattedDay,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Min: ${daily.temperatureMin}°C',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            Text(
+                              'Max: ${daily.temperatureMax}°C',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            const SizedBox(height: 4),
+                            Image.network(
+                              getWeatherIcon(daily.weatherCode),
+                              width: 40,
+                              height: 40,
+                              errorBuilder: (context, error, stackTrace) => Icon(Icons.cloud, color: Colors.black54, size: 40),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -76,4 +159,3 @@ class WeeklyWeatherTab extends ConsumerWidget {
     );
   }
 }
-
