@@ -52,6 +52,7 @@ class WeatherService {
         return HourlyWeather(
           time: DateTime.parse(times[index]),
           temperature: temperatures[index],
+          weatherCode: weatherCodes[index],
           weatherDescription:
               weatherDescriptions[weatherCodes[index]] ?? 'Unknown',
           windSpeed: windSpeed[index],
@@ -93,6 +94,7 @@ class WeatherService {
           date: DateTime.parse(times[index]),
           temperatureMax: temperatureMax[index],
           temperatureMin: temperatureMin[index],
+          weatherCode: weatherCodes[index],
           weatherDescription:
               weatherDescriptions[weatherCodes[index]] ?? 'Unknown',
         );

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
 import '../../providers/weather_providers.dart';
 import '../../providers/location_providers.dart';
+import '../../utils/weather_icons.dart';
+import '../../models/weather/hourly_weather.dart';
 
 class TodayWeatherTab extends ConsumerWidget {
   const TodayWeatherTab({super.key});
@@ -18,49 +21,111 @@ class TodayWeatherTab extends ConsumerWidget {
           return Center(
             child: Text(
               "Invalid City was selected. Please select a valid city.",
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 16, color: Colors.red),
             ),
           );
         }
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                '${selectedCity?.name ?? "Unknown City"}, ${selectedCity?.region ?? ""}, ${selectedCity?.country ?? ""}',
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: DataTable(
-                    columns: const [
-                      DataColumn(label: Text('Time')),
-                      DataColumn(label: Text('Temp(°C)')),
-                      DataColumn(label: Text('Condition')),
-                      DataColumn(label: Text('Wind')),
-                    ],
-                    rows: hourlyData.map((hourWeather) {
-                      final formattedTime =
-                          DateFormat('HH:mm').format(hourWeather.time);
-                      return DataRow(cells: [
-                        DataCell(Text(formattedTime)),
-                        DataCell(Text('${hourWeather.temperature}°C')),
-                        DataCell(Text(hourWeather.weatherDescription)),
-                        DataCell(Text(hourWeather.windSpeed.toString())),
-                      ]);
-                    }).toList(),
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Location
+                Text(
+                  '${selectedCity?.name ?? "Unknown City"}, ${selectedCity?.region ?? ""}, ${selectedCity?.country ?? ""}',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
                   ),
                 ),
-              ),
+                const SizedBox(height: 16),
+
+SizedBox(
+  height: 250,
+  child: SfCartesianChart(
+    primaryXAxis: DateTimeAxis(
+      title: AxisTitle(
+        text: 'Time of Day',
+        textStyle: TextStyle(color: Colors.black54),
+      ),
+      dateFormat: DateFormat.Hm(),
+      intervalType: DateTimeIntervalType.hours,
+      minimum: DateTime(hourlyData.first.time.year, hourlyData.first.time.month, hourlyData.first.time.day, 0, 0),
+      maximum: DateTime(hourlyData.first.time.year, hourlyData.first.time.month, hourlyData.first.time.day, 23, 59),
+    ),
+    primaryYAxis: NumericAxis(
+      title: AxisTitle(
+        text: 'Temperature (°C)',
+        textStyle: TextStyle(color: Colors.black54),
+      ),
+      minimum: hourlyData.map((data) => data.temperature).reduce((a, b) => a < b ? a : b) - 5,
+      maximum: hourlyData.map((data) => data.temperature).reduce((a, b) => a > b ? a : b) + 5,
+    ),
+    series: <ChartSeries>[
+      LineSeries<HourlyWeather, DateTime>(
+        dataSource: hourlyData,
+        xValueMapper: (HourlyWeather data, _) => data.time,
+        yValueMapper: (HourlyWeather data, _) => data.temperature,
+        color: Colors.blue,
+        width: 2,
+        markerSettings: MarkerSettings(isVisible: true),
+      ),
+    ],
+  ),
+),
+
+
+                const SizedBox(height: 16),
+
+                // Horizontal List
+                SizedBox(
+                  height: 120,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: hourlyData.length,
+                    itemBuilder: (context, index) {
+                      final hourWeather = hourlyData[index];
+                      final formattedTime = DateFormat('HH:mm').format(hourWeather.time);
+                      return Container(
+                        width: 100,
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey[300]!),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              formattedTime,
+                              style: TextStyle(fontSize: 14, color: Colors.black87),
+                            ),
+                            const SizedBox(height: 8),
+                            Image.network(
+                              getWeatherIcon(hourWeather.weatherCode),
+                              width: 40,
+                              height: 40,
+                              errorBuilder: (context, error, stackTrace) => Icon(Icons.cloud, color: Colors.black54, size: 40),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              '${hourWeather.temperature}°C',
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
@@ -71,8 +136,8 @@ class TodayWeatherTab extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "$e",
-                style: TextStyle(fontSize: 14),
+                "Error: $e",
+                style: TextStyle(fontSize: 14, color: Colors.red),
               ),
             ],
           ),

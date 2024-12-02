@@ -42,6 +42,6 @@ final Map<int, String> weatherIcons = {
 
 String getWeatherIcon(int code) {
   var icon = weatherIcons[code];
-  var link = 'https://openweathermap.org/img/wn/'+'$icon' +'@2x.png';
+  var link = 'https://openweathermap.org/img/wn/$icon@2x.png';
   return link;
 }

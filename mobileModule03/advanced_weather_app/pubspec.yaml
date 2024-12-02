@@ -7,6 +7,7 @@ environment:
   sdk: ^3.5.4
 
 dependencies:
+  syncfusion_flutter_charts: ^20.4.44
   intl: ^0.17.0
   flutter_riverpod: ^2.0.0
   http: ^1.2.2
