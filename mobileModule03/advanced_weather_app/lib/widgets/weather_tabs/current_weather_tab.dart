@@ -30,7 +30,6 @@ class CurrentWeatherTab extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Location
                 Text(
                   '${selectedCity?.name ?? "Unknown"}, ${selectedCity?.region ?? "Unknown"}, ${selectedCity?.country ?? "Unknown"}',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -44,12 +43,16 @@ class CurrentWeatherTab extends ConsumerWidget {
                       getWeatherIcon(weather.weatherCode),
                       width: 128,
                       height: 128,
-                      errorBuilder: (context, error, stackTrace) => Icon(Icons.cloud, size: 64),
+                      errorBuilder: (context, error, stackTrace) =>
+                          Icon(Icons.cloud, size: 64),
                     ),
                     SizedBox(width: 16),
                     Text(
                       '${weather.temperature}°C',
-                      style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 28, 122, 204)),
+                      style: TextStyle(
+                          fontSize: 48,
+                          fontWeight: FontWeight.bold,
+                          color: const Color.fromARGB(255, 28, 122, 204)),
                     ),
                   ],
                 ),
@@ -62,7 +65,9 @@ class CurrentWeatherTab extends ConsumerWidget {
                 SizedBox(height: 16),
                 Text(
                   'Wind Speed: ${weather.windSpeed} km/h',
-                  style: TextStyle(fontSize: 24, color: const Color.fromARGB(255, 162, 68, 28)),
+                  style: TextStyle(
+                      fontSize: 24,
+                      color: const Color.fromARGB(255, 162, 68, 28)),
                 ),
               ],
             ),

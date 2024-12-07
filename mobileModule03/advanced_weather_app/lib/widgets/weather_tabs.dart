@@ -16,7 +16,7 @@ class WeatherTabs extends StatelessWidget {
           image: AssetImage("assets/background.avif"),
           fit: BoxFit.cover,
           colorFilter: ColorFilter.mode(
-            Colors.black.withOpacity(0.4), // Adjust the opacity as needed
+            Colors.black.withOpacity(0.4),
             BlendMode.dstATop,
           ),
         ),

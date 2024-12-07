@@ -32,7 +32,6 @@ class TodayWeatherTab extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Location
                 Text(
                   '${selectedCity?.name ?? "Unknown City"}, ${selectedCity?.region ?? ""}, ${selectedCity?.country ?? ""}',
                   style: TextStyle(
@@ -42,45 +41,57 @@ class TodayWeatherTab extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-
-SizedBox(
-  height: 250,
-  child: SfCartesianChart(
-    primaryXAxis: DateTimeAxis(
-      title: AxisTitle(
-        text: 'Time of Day',
-        textStyle: TextStyle(color: Colors.black54),
-      ),
-      dateFormat: DateFormat.Hm(),
-      intervalType: DateTimeIntervalType.hours,
-      minimum: DateTime(hourlyData.first.time.year, hourlyData.first.time.month, hourlyData.first.time.day, 0, 0),
-      maximum: DateTime(hourlyData.first.time.year, hourlyData.first.time.month, hourlyData.first.time.day, 23, 59),
-    ),
-    primaryYAxis: NumericAxis(
-      title: AxisTitle(
-        text: 'Temperature (°C)',
-        textStyle: TextStyle(color: Colors.black54),
-      ),
-      minimum: hourlyData.map((data) => data.temperature).reduce((a, b) => a < b ? a : b) - 5,
-      maximum: hourlyData.map((data) => data.temperature).reduce((a, b) => a > b ? a : b) + 5,
-    ),
-    series: <ChartSeries>[
-      LineSeries<HourlyWeather, DateTime>(
-        dataSource: hourlyData,
-        xValueMapper: (HourlyWeather data, _) => data.time,
-        yValueMapper: (HourlyWeather data, _) => data.temperature,
-        color: Colors.blue,
-        width: 2,
-        markerSettings: MarkerSettings(isVisible: true),
-      ),
-    ],
-  ),
-),
-
-
+                SizedBox(
+                  height: 250,
+                  child: SfCartesianChart(
+                    primaryXAxis: DateTimeAxis(
+                      title: AxisTitle(
+                        text: 'Time of Day',
+                        textStyle: TextStyle(color: Colors.black54),
+                      ),
+                      dateFormat: DateFormat.Hm(),
+                      intervalType: DateTimeIntervalType.hours,
+                      minimum: DateTime(
+                          hourlyData.first.time.year,
+                          hourlyData.first.time.month,
+                          hourlyData.first.time.day,
+                          0,
+                          0),
+                      maximum: DateTime(
+                          hourlyData.first.time.year,
+                          hourlyData.first.time.month,
+                          hourlyData.first.time.day,
+                          23,
+                          59),
+                    ),
+                    primaryYAxis: NumericAxis(
+                      title: AxisTitle(
+                        text: 'Temperature (°C)',
+                        textStyle: TextStyle(color: Colors.black54),
+                      ),
+                      minimum: hourlyData
+                              .map((data) => data.temperature)
+                              .reduce((a, b) => a < b ? a : b) -
+                          5,
+                      maximum: hourlyData
+                              .map((data) => data.temperature)
+                              .reduce((a, b) => a > b ? a : b) +
+                          5,
+                    ),
+                    series: <ChartSeries>[
+                      LineSeries<HourlyWeather, DateTime>(
+                        dataSource: hourlyData,
+                        xValueMapper: (HourlyWeather data, _) => data.time,
+                        yValueMapper: (HourlyWeather data, _) =>
+                            data.temperature,
+                        color: Colors.blue,
+                        width: 2,
+                        markerSettings: MarkerSettings(isVisible: true),
+                      ),
+                    ],
+                  ),
+                ),
                 const SizedBox(height: 16),
-
-                // Horizontal List
                 SizedBox(
                   height: 120,
                   child: ListView.builder(
@@ -88,12 +99,13 @@ SizedBox(
                     itemCount: hourlyData.length,
                     itemBuilder: (context, index) {
                       final hourWeather = hourlyData[index];
-                      final formattedTime = DateFormat('HH:mm').format(hourWeather.time);
+                      final formattedTime =
+                          DateFormat('HH:mm').format(hourWeather.time);
                       return Container(
                         width: 100,
                         margin: const EdgeInsets.symmetric(horizontal: 8),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: const Color.fromARGB(255, 200, 222, 243),
                           border: Border.all(color: Colors.grey[300]!),
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -103,19 +115,25 @@ SizedBox(
                           children: [
                             Text(
                               formattedTime,
-                              style: TextStyle(fontSize: 14, color: Colors.black87),
+                              style: TextStyle(
+                                  fontSize: 14, color: Colors.black87),
                             ),
                             const SizedBox(height: 8),
                             Image.network(
                               getWeatherIcon(hourWeather.weatherCode),
                               width: 40,
                               height: 40,
-                              errorBuilder: (context, error, stackTrace) => Icon(Icons.cloud, color: Colors.black54, size: 40),
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Icon(Icons.cloud,
+                                      color: Colors.black54, size: 40),
                             ),
                             const SizedBox(height: 8),
                             Text(
                               '${hourWeather.temperature}°C',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black54),
                             ),
                           ],
                         ),

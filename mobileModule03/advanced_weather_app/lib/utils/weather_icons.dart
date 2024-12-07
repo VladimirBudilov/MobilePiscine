@@ -39,7 +39,6 @@ final Map<int, String> weatherIcons = {
   99: "11d", // Thunderstorm with heavy hail
 };
 
-
 String getWeatherIcon(int code) {
   var icon = weatherIcons[code];
   var link = 'https://openweathermap.org/img/wn/$icon@2x.png';

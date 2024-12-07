@@ -12,8 +12,7 @@ final appStatusProvider =
 });
 
 class LocationStatusNotifier extends StateNotifier<AppStatus> {
-  LocationStatusNotifier()
-      : super(AppStatus(status: '', isLoading: false));
+  LocationStatusNotifier() : super(AppStatus(status: '', isLoading: false));
 
   void setLoadingStatus() {
     state = AppStatus(status: 'Loading...', isLoading: true);
@@ -53,4 +52,3 @@ class LocationStatusNotifier extends StateNotifier<AppStatus> {
     }
   }
 }
-

@@ -12,21 +12,19 @@ class GeocodingService {
         Uri.parse('$_baseUrl/search?name=$query'),
       );
     } catch (e) {
-      throw Exception(
-          'please check your internet connection.');
+      throw Exception('please check your internet connection.');
     }
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-       if (data['results'] != null && data['results'] is List) {
-    return (data['results'] as List)
-        .map<City>((json) => City.fromJson(json))
-        .take(5)
-        .toList();
-       }
-       else {
-         return [];
-       }
+      if (data['results'] != null && data['results'] is List) {
+        return (data['results'] as List)
+            .map<City>((json) => City.fromJson(json))
+            .take(5)
+            .toList();
+      } else {
+        return [];
+      }
     } else if (response.statusCode >= 400 && response.statusCode <= 500) {
       throw Exception(
           'Invalid request. Check your query or try a different location.');
@@ -43,8 +41,7 @@ class GeocodingService {
         Uri.parse('$_baseUrl/search?name=$cityName'),
       );
     } catch (e) {
-      throw Exception(
-          'please check your internet connection.');
+      throw Exception('please check your internet connection.');
     }
 
     if (response.statusCode == 200) {
@@ -77,8 +74,7 @@ class GeocodingService {
         ),
       );
     } catch (e) {
-      throw Exception(
-          'please check your internet connection.');
+      throw Exception('please check your internet connection.');
     }
 
     if (response.statusCode == 200) {
