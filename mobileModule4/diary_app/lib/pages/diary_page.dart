@@ -56,7 +56,8 @@ class _DiaryPageState extends State<DiaryPage> {
   void _viewEntry(DiaryEntry entry) {
     showDialog(
       context: context,
-      builder: (context) => ViewEntryDialog(entry: entry),
+      builder: (context) => ViewEntryDialog(entry: entry, diaryService: widget.diaryService, authService: widget.authService,  onUpdate: _loadEntries),
+     
     );
   }
 
@@ -94,7 +95,13 @@ class _DiaryPageState extends State<DiaryPage> {
             final entry = _entries[index];
             return ListTile(
               title: Text(entry.title),
-              subtitle: Text(entry.date),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(entry.date),
+                  Text('Mood: ${entry.mood}'),
+                ],
+              ),
               onTap: () => _viewEntry(entry),
             );
           },

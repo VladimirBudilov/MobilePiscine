@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../models/diary_entry.dart';
 
-class CreateEntryDialog extends StatelessWidget {
+class CreateEntryDialog extends StatefulWidget {
+  @override
+  _CreateEntryDialogState createState() => _CreateEntryDialogState();
+}
+
+class _CreateEntryDialogState extends State<CreateEntryDialog> {
   final _formKey = GlobalKey<FormState>();
   String _title = '';
   String _description = '';
+  String _mood = 'Happy';
+  final List<String> _moods = ['Happy', 'Sad', 'Angry', 'Excited', 'Calm'];
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+    final email = user?.email ?? 'Unknown';
+
     return AlertDialog(
       title: Text('Create Entry'),
       content: Form(
@@ -38,6 +49,21 @@ class CreateEntryDialog extends StatelessWidget {
               },
               onChanged: (value) => _description = value,
             ),
+            DropdownButtonFormField<String>(
+              value: _mood,
+              decoration: InputDecoration(labelText: 'Mood'),
+              items: _moods.map((String mood) {
+                return DropdownMenuItem<String>(
+                  value: mood,
+                  child: Text(mood),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  _mood = newValue!;
+                });
+              },
+            )
           ],
         ),
       ),
@@ -54,6 +80,8 @@ class CreateEntryDialog extends StatelessWidget {
                 title: _title,
                 description: _description,
                 date: DateTime.now().toIso8601String(),
+                mood: _mood,
+                email: email,
               );
               Navigator.pop(context, newEntry);
             }
