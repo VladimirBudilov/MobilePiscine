@@ -77,16 +77,28 @@ class _DiaryPageState extends State<DiaryPage> {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: _entries.length,
-        itemBuilder: (context, index) {
-          final entry = _entries[index];
-          return ListTile(
-            title: Text(entry.title),
-            subtitle: Text(entry.date),
-            onTap: () => _viewEntry(entry),
-          );
-        },
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/background_main.webp"),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              Colors.black.withOpacity(0.4),
+              BlendMode.dstATop,
+            ),
+          ),
+        ),
+        child: ListView.builder(
+          itemCount: _entries.length,
+          itemBuilder: (context, index) {
+            final entry = _entries[index];
+            return ListTile(
+              title: Text(entry.title),
+              subtitle: Text(entry.date),
+              onTap: () => _viewEntry(entry),
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _createEntry,

@@ -8,7 +8,8 @@ class AuthService {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       if (googleUser != null) {
-        final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
         final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
@@ -22,7 +23,14 @@ class AuthService {
   }
 
   Future<User?> signInWithGitHub() async {
-    // Заглушка
+    try {
+      GithubAuthProvider githubProvider = GithubAuthProvider();
+      var result =
+          await FirebaseAuth.instance.signInWithProvider(githubProvider);
+      return result.user;
+    } catch (e) {
+      print('Error during GitHub sign-in: $e');
+    }
     return null;
   }
 

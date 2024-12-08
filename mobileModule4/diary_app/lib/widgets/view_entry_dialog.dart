@@ -14,7 +14,8 @@ class ViewEntryDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Date: ${entry.date}', style: TextStyle(fontWeight: FontWeight.bold)),
+          Text('Date: ${entry.date}',
+              style: TextStyle(fontWeight: FontWeight.bold)),
           SizedBox(height: 8),
           Text(entry.description),
         ],

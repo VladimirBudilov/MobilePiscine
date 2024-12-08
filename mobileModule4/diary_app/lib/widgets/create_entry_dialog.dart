@@ -50,7 +50,7 @@ class CreateEntryDialog extends StatelessWidget {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               final newEntry = DiaryEntry(
-                id: '', // Firebase will generate ID
+                id: '',
                 title: _title,
                 description: _description,
                 date: DateTime.now().toIso8601String(),

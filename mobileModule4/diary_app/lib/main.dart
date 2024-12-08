@@ -12,11 +12,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(DiaryApp());
 }
 
-class MyApp extends StatelessWidget {
-  // Инициализируем сервисы здесь
+class DiaryApp extends StatelessWidget {
   final AuthService authService = AuthService();
   final DiaryService diaryService = DiaryService();
 
