@@ -9,7 +9,7 @@ class ViewEntryDialog extends StatelessWidget {
   final AuthService authService;
   final VoidCallback onUpdate;
 
-  ViewEntryDialog({
+  const ViewEntryDialog({super.key, 
     required this.entry,
     required this.diaryService,
     required this.authService,
@@ -26,21 +26,21 @@ class ViewEntryDialog extends StatelessWidget {
         children: [
           Text(
             'Date: ${entry.date}',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             'Mood: ${entry.mood}',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(entry.description),
         ],
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Close'),
+          child: const Text('Close'),
         ),
         TextButton(
           onPressed: () async {
@@ -48,16 +48,16 @@ class ViewEntryDialog extends StatelessWidget {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text('Confirm Deletion'),
-                  content: Text('Are you sure you want to delete this entry?'),
+                  title: const Text('Confirm Deletion'),
+                  content: const Text('Are you sure you want to delete this entry?'),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context, false),
-                      child: Text('Cancel'),
+                      child: const Text('Cancel'),
                     ),
                     TextButton(
                       onPressed: () => Navigator.pop(context, true),
-                      child: Text('Delete'),
+                      child: const Text('Delete'),
                     ),
                   ],
                 );
@@ -72,11 +72,11 @@ class ViewEntryDialog extends StatelessWidget {
                onUpdate();
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Entry deleted successfully')),
+                const SnackBar(content: Text('Entry deleted successfully')),
               );
             }
           },
-          child: Text('Delete'),
+          child: const Text('Delete'),
         ),
       ],
     );

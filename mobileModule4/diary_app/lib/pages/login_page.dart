@@ -4,10 +4,12 @@ import '../services/auth_service.dart';
 class LoginPage extends StatelessWidget {
   final AuthService _authService = AuthService();
 
+  LoginPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Login')),
+      appBar: AppBar(title: const Text('Login')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -19,7 +21,7 @@ class LoginPage extends StatelessWidget {
                   Navigator.pushReplacementNamed(context, '/diary');
                 }
               },
-              child: Text('Login with Google'),
+              child: const Text('Login with Google'),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -28,7 +30,7 @@ class LoginPage extends StatelessWidget {
                   Navigator.pushReplacementNamed(context, '/diary');
                 }
               },
-              child: Text('Login with GitHub'),
+              child: const Text('Login with GitHub'),
             ),
           ],
         ),

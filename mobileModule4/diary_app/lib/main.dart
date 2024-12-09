@@ -19,6 +19,8 @@ class DiaryApp extends StatelessWidget {
   final AuthService authService = AuthService();
   final DiaryService diaryService = DiaryService();
 
+  DiaryApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
