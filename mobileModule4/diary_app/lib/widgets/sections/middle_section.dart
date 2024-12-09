@@ -17,6 +17,9 @@ class MiddleSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<DiaryEntry> sortedEntries = List.from(entries);
+    sortedEntries.sort((a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -33,7 +36,7 @@ class MiddleSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          ...entries.take(2).map((entry) {
+          ...sortedEntries.take(2).map((entry) {
             final formattedDate =
                 DateFormat('dd MMM yyyy').format(DateTime.parse(entry.date));
             final moodIconPath = MoodIconService.moodToIcon(entry.mood);
@@ -59,8 +62,8 @@ class MiddleSection extends StatelessWidget {
                   const SizedBox(width: 16),
                   Image.asset(
                     moodIconPath,
-                    width: 46,
-                    height: 46,
+                    width: 24,
+                    height: 24,
                     errorBuilder: (context, error, stackTrace) {
                       return Icon(Icons.error, color: Colors.red);
                     },
@@ -81,24 +84,26 @@ class MiddleSection extends StatelessWidget {
               ),
             );
           }).toList(),
-          Padding(padding: const EdgeInsets.all(8)),
-              Center(
-                child: ElevatedButton(
-                  onPressed: createEntry,
-                  child: const Text('Add Note'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    textStyle: const TextStyle(
-                      fontSize: 24,
-                      color: Colors.black,
-                      fontFamily: 'StrangeFont',
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
+          const Spacer(),
+          Center(
+            child: ElevatedButton(
+              onPressed: createEntry,
+              child: const Text('Add Note'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white.withOpacity(0.7),
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                textStyle: const TextStyle(
+                  fontSize: 24,
+                  fontFamily: 'StrangeFont',
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: BorderSide(color: Colors.black.withOpacity(0.7)),
                 ),
               ),
+            ),
+          ),
         ],
       ),
     );
