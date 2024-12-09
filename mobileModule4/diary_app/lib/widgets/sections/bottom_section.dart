@@ -11,11 +11,6 @@ class BottomSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Найти эмоцию с наибольшим процентом
-    String dominantEmotion =
-        moodData.entries.reduce((a, b) => a.value > b.value ? a : b).key;
-    double dominantPercentage = moodData[dominantEmotion] ?? 0.0;
-
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Container(
@@ -38,37 +33,39 @@ class BottomSection extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            ...moodData.entries.map((entry) {
-              final moodIconPath = MoodIconService.moodToIcon(entry.key);
-              return Row(
-                children: [
-                  Image.asset(
-                    moodIconPath,
-                    width: 24,
-                    height: 24,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Icon(Icons.error, color: Colors.red);
-                    },
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    '${entry.value.toStringAsFixed(1)}%',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
+            GridView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 4,
+              ),
+              itemCount: moodData.length,
+              itemBuilder: (context, index) {
+                final entry = moodData.entries.elementAt(index);
+                final moodIconPath = MoodIconService.moodToIcon(entry.key);
+                return Row(
+                  children: [
+                    Image.asset(
+                      moodIconPath,
+                      width: 32,
+                      height: 32,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Icon(Icons.error, color: Colors.red);
+                      },
                     ),
-                  ),
-                  if (entry.key == dominantEmotion && dominantPercentage > 50)
+                    const SizedBox(width: 8),
                     Text(
-                      ' - Why are you so ${entry.key.toLowerCase()}?',
+                      '${entry.value.toStringAsFixed(1)}%',
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 24,
                         color: Colors.black,
                       ),
                     ),
-                ],
-              );
-            }).toList(),
+                  ],
+                );
+              },
+            ),
           ],
         ),
       ),

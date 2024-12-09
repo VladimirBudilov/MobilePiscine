@@ -1,5 +1,3 @@
-import 'package:diary_app/widgets/sections/bottom_section.dart';
-import 'package:diary_app/widgets/sections/middle_section.dart';
 import 'package:flutter/material.dart';
 import '../services/diary_service.dart';
 import '../models/diary_entry.dart';
@@ -7,6 +5,8 @@ import '../widgets/create_entry_dialog.dart';
 import '../widgets/view_entry_dialog.dart';
 import '../services/auth_service.dart';
 import '../widgets/sections/top_section.dart';
+import '../widgets/sections/middle_section.dart';
+import '../widgets/sections/bottom_section.dart';
 
 class DiaryPage extends StatefulWidget {
   final AuthService authService;
@@ -107,7 +107,7 @@ class _DiaryPageState extends State<DiaryPage> {
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/background_main.webp"),
+              image: const AssetImage("assets/background_main.webp"),
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(
                 Colors.black.withOpacity(0.4),
@@ -115,29 +115,32 @@ class _DiaryPageState extends State<DiaryPage> {
               ),
             ),
           ),
-          child: Column(
-            children: [
-              Expanded(
-                flex: 2,
-                child: TopSection(
-                  userName: _userName,
-                  onLogout: _logout,
-                  onNavigateToCalendar: () => print('Navigate to Calendar'),
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: TopSection(
+                    userName: _userName,
+                    onLogout: _logout,
+                    onNavigateToCalendar: () => print('Navigate to Calendar'),
+                  ),
                 ),
-              ),
-              Expanded(
-                flex: 4,
-                child: MiddleSection(
-                  entries: _entries,
-                  createEntry: _createEntry,
-                  viewEntry: _viewEntry,
+                Expanded(
+                  flex: 4,
+                  child: MiddleSection(
+                    entries: _entries,
+                    createEntry: _createEntry,
+                    viewEntry: _viewEntry,
+                  ),
                 ),
-              ),
-              Expanded(flex: 4, child: BottomSection(moodData: _moodData)),
-            ],
+                Expanded(
+                  flex: 4,
+                  child: BottomSection(moodData: _moodData),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
     );
   }
 }

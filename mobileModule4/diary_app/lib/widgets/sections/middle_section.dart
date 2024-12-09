@@ -81,13 +81,24 @@ class MiddleSection extends StatelessWidget {
               ),
             );
           }).toList(),
-          const Spacer(),
-          Center(
-            child: ElevatedButton(
-              onPressed: createEntry,
-              child: const Text('Add Entry'),
-            ),
-          ),
+          Padding(padding: const EdgeInsets.all(8)),
+              Center(
+                child: ElevatedButton(
+                  onPressed: createEntry,
+                  child: const Text('Add Note'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    textStyle: const TextStyle(
+                      fontSize: 24,
+                      color: Colors.black,
+                      fontFamily: 'StrangeFont',
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
         ],
       ),
     );

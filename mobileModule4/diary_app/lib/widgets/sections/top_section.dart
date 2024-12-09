@@ -11,20 +11,19 @@ class TopSection extends StatelessWidget {
     required this.onLogout,
     required this.onNavigateToCalendar,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.7),
+        color: const Color.fromARGB(135, 103, 190, 248).withOpacity(0.6),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Stack(
         children: [
           Center(
             child: Text(
-              userName,
+              userName.length > 14 ? userName.substring(0, 12) + "..."  : userName,
               style: TextStyle(
                 fontSize: 40,
                 fontFamily: 'StrangeFont',
