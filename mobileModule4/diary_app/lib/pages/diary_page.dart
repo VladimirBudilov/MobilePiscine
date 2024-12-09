@@ -102,12 +102,21 @@ class _DiaryPageState extends State<DiaryPage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final safeAreaVertical = MediaQuery.of(context).padding.top +
+        MediaQuery.of(context).padding.bottom;
+    final availableHeight = screenHeight - safeAreaVertical;
+    final topSectionHeight = availableHeight * 0.2;
+
     return Scaffold(
       body: SafeArea(
         child: Container(
+          constraints: BoxConstraints(
+            minHeight: availableHeight,
+          ),
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: const AssetImage("assets/background_main.webp"),
+              image: AssetImage("assets/background_main.webp"),
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(
                 Colors.black.withOpacity(0.4),
@@ -115,32 +124,33 @@ class _DiaryPageState extends State<DiaryPage> {
               ),
             ),
           ),
-            child: Column(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: TopSection(
-                    userName: _userName,
-                    onLogout: _logout,
-                    onNavigateToCalendar: () => print('Navigate to Calendar'),
+          child: SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: availableHeight,
+              ),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: topSectionHeight,
+                    child: TopSection(
+                      userName: _userName,
+                      onLogout: _logout,
+                      onNavigateToCalendar: () => print('Navigate to Calendar'),
+                    ),
                   ),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: MiddleSection(
+                  MiddleSection(
                     entries: _entries,
                     createEntry: _createEntry,
                     viewEntry: _viewEntry,
                   ),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: BottomSection(moodData: _moodData),
-                ),
-              ],
+                  BottomSection(moodData: _moodData),
+                ],
+              ),
             ),
           ),
         ),
+      ),
     );
   }
 }

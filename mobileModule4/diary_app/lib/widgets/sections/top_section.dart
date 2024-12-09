@@ -23,7 +23,9 @@ class TopSection extends StatelessWidget {
         children: [
           Center(
             child: Text(
-              userName.length > 14 ? userName.substring(0, 12) + "..."  : userName,
+              userName.length > 14
+                  ? userName.substring(0, 12) + "..."
+                  : userName,
               style: TextStyle(
                 fontSize: 40,
                 fontFamily: 'StrangeFont',

@@ -17,21 +17,20 @@ class MiddleSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Сортируем записи по дате
     List<DiaryEntry> sortedEntries = List.from(entries);
-    sortedEntries.sort((a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
+    sortedEntries.sort(
+        (a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(50.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Spacer(),
           Center(
             child: Text(
               'Recent Notes (Total: ${entries.length})',
               style: TextStyle(
-                fontSize: 28,
+                fontSize: 26,
                 fontFamily: 'StrangeFont',
                 color: const Color.fromARGB(255, 32, 31, 31),
               ),
@@ -94,9 +93,11 @@ class MiddleSection extends StatelessWidget {
               onPressed: createEntry,
               child: const Text('Add Note'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(186, 102, 194, 255).withOpacity(0.6),
+                backgroundColor:
+                    const Color.fromARGB(186, 102, 194, 255).withOpacity(0.6),
                 foregroundColor: Colors.black,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 textStyle: const TextStyle(
                   fontSize: 24,
                   fontFamily: 'StrangeFont',
