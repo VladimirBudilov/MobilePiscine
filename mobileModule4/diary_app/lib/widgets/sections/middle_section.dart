@@ -17,6 +17,7 @@ class MiddleSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Сортируем записи по дате
     List<DiaryEntry> sortedEntries = List.from(entries);
     sortedEntries.sort((a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
 
@@ -25,11 +26,12 @@ class MiddleSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Spacer(),
           Center(
             child: Text(
               'Recent Notes (Total: ${entries.length})',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 28,
                 fontFamily: 'StrangeFont',
                 color: const Color.fromARGB(255, 32, 31, 31),
               ),
@@ -40,57 +42,59 @@ class MiddleSection extends StatelessWidget {
             final formattedDate =
                 DateFormat('dd MMM yyyy').format(DateTime.parse(entry.date));
             final moodIconPath = MoodIconService.moodToIcon(entry.mood);
-            return Container(
-              width: double.infinity,
-              margin: const EdgeInsets.only(bottom: 16),
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.7),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    formattedDate,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Image.asset(
-                    moodIconPath,
-                    width: 24,
-                    height: 24,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Icon(Icons.error, color: Colors.red);
-                    },
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Text(
-                      entry.title,
+            return GestureDetector(
+              onTap: () => viewEntry(entry),
+              child: Container(
+                width: double.infinity,
+                margin: const EdgeInsets.only(bottom: 16),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      formattedDate,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 16),
+                    Image.asset(
+                      moodIconPath,
+                      width: 24,
+                      height: 24,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Icon(Icons.error, color: Colors.red);
+                      },
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Text(
+                        entry.title,
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           }).toList(),
-          const Spacer(),
           Center(
             child: ElevatedButton(
               onPressed: createEntry,
               child: const Text('Add Note'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white.withOpacity(0.7),
+                backgroundColor: const Color.fromARGB(186, 102, 194, 255).withOpacity(0.6),
                 foregroundColor: Colors.black,
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 textStyle: const TextStyle(
