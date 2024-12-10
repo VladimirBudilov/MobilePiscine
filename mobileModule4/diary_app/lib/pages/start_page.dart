@@ -42,7 +42,7 @@ class StartPage extends StatelessWidget {
                     Navigator.pushReplacementNamed(context, '/login');
                   }
                 },
-                child: const Text('Login'),
+                child: const Text('Login', style: TextStyle(fontSize: 24)),
               ),
             ],
           ),

@@ -36,7 +36,7 @@ class DiaryService {
 
   Future<Map<String, double>> fetchMoodStatistics(String userId) async {
     List<DiaryEntry> entries = await fetchEntries(userId);
-    
+
     Map<String, int> moodCount = {
       'Happy': 0,
       'Sad': 0,
@@ -48,7 +48,7 @@ class DiaryService {
       'Stressed': 0,
       'Default': 0,
     };
-    
+
     DateTime sevenDaysAgo = DateTime.now().subtract(const Duration(days: 7));
     for (var entry in entries) {
       DateTime entryDate = DateFormat('yyyy-MM-dd').parse(entry.date);
@@ -60,7 +60,8 @@ class DiaryService {
     double totalEntries = moodCount.values.fold(0, (sum, count) => sum + count);
     Map<String, double> moodPercentages = {};
     moodCount.forEach((mood, count) {
-      moodPercentages[mood] = totalEntries > 0 ? (count / totalEntries) * 100 : 0.0;
+      moodPercentages[mood] =
+          totalEntries > 0 ? (count / totalEntries) * 100 : 0.0;
     });
 
     return moodPercentages;

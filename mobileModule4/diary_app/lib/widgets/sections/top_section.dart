@@ -6,11 +6,11 @@ class TopSection extends StatelessWidget {
   final VoidCallback onNavigateToCalendar;
 
   const TopSection({
-    Key? key,
+    super.key,
     required this.userName,
     required this.onLogout,
     required this.onNavigateToCalendar,
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,9 +24,9 @@ class TopSection extends StatelessWidget {
           Center(
             child: Text(
               userName.length > 14
-                  ? userName.substring(0, 12) + "..."
+                  ? "${userName.substring(0, 12)}..."
                   : userName,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 40,
                 fontFamily: 'StrangeFont',
                 color: Colors.white,
@@ -41,20 +41,22 @@ class TopSection extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: onNavigateToCalendar,
-                  child: const Text('Calendar'),
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    textStyle: TextStyle(fontSize: 12),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    textStyle: const TextStyle(fontSize: 12),
                   ),
+                  child: const Text('Calendar'),
                 ),
                 const SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: onLogout,
-                  child: const Text('Logout'),
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    textStyle: TextStyle(fontSize: 12),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    textStyle: const TextStyle(fontSize: 12),
                   ),
+                  child: const Text('Logout'),
                 ),
               ],
             ),

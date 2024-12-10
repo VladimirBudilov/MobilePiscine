@@ -5,9 +5,9 @@ class BottomSection extends StatelessWidget {
   final Map<String, double> moodData;
 
   const BottomSection({
-    Key? key,
+    super.key,
     required this.moodData,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class BottomSection extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
+            const Center(
               child: Text(
                 'Mood for the last week',
                 style: TextStyle(
@@ -35,8 +35,8 @@ class BottomSection extends StatelessWidget {
             const SizedBox(height: 16),
             GridView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 4,
               ),
@@ -51,13 +51,13 @@ class BottomSection extends StatelessWidget {
                       width: 32,
                       height: 32,
                       errorBuilder: (context, error, stackTrace) {
-                        return Icon(Icons.error, color: Colors.red);
+                        return const Icon(Icons.error, color: Colors.red);
                       },
                     ),
                     const SizedBox(width: 8),
                     Text(
                       '${entry.value.toStringAsFixed(1)}%',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 24,
                         color: Colors.black,
                       ),

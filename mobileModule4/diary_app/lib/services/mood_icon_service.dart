@@ -17,7 +17,8 @@ class MoodIconService {
   static String iconToMood(String iconPath) {
     return _moodToIcon.entries
         .firstWhere((entry) => entry.value == iconPath,
-            orElse: () => const MapEntry('Default', 'assets/icon/emotions/default.png'))
+            orElse: () =>
+                const MapEntry('Default', 'assets/icon/emotions/default.png'))
         .key;
   }
 

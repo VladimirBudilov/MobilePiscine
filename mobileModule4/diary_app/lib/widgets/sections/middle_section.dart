@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/diary_entry.dart';
-import 'package:intl/intl.dart';
-import '../../services/mood_icon_service.dart';
+import '../diary_entry.dart';
 
 class MiddleSection extends StatelessWidget {
   final List<DiaryEntry> entries;
@@ -19,7 +18,8 @@ class MiddleSection extends StatelessWidget {
   Widget build(BuildContext context) {
     List<DiaryEntry> sortedEntries = List.from(entries);
     sortedEntries.sort(
-        (a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
+      (a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)),
+    );
 
     return Padding(
       padding: const EdgeInsets.all(50.0),
@@ -29,69 +29,23 @@ class MiddleSection extends StatelessWidget {
           Center(
             child: Text(
               'Recent Notes (Total: ${entries.length})',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 26,
                 fontFamily: 'StrangeFont',
-                color: const Color.fromARGB(255, 32, 31, 31),
+                color: Color.fromARGB(255, 32, 31, 31),
               ),
             ),
           ),
           const SizedBox(height: 16),
           ...sortedEntries.take(2).map((entry) {
-            final formattedDate =
-                DateFormat('dd MMM yyyy').format(DateTime.parse(entry.date));
-            final moodIconPath = MoodIconService.moodToIcon(entry.mood);
-            return GestureDetector(
+            return DiaryEntryWidget(
+              entry: entry,
               onTap: () => viewEntry(entry),
-              child: Container(
-                width: double.infinity,
-                margin: const EdgeInsets.only(bottom: 16),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.7),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      formattedDate,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Image.asset(
-                      moodIconPath,
-                      width: 24,
-                      height: 24,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Icon(Icons.error, color: Colors.red);
-                      },
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Text(
-                        entry.title,
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             );
-          }).toList(),
+          }),
           Center(
             child: ElevatedButton(
               onPressed: createEntry,
-              child: const Text('Add Note'),
               style: ElevatedButton.styleFrom(
                 backgroundColor:
                     const Color.fromARGB(186, 102, 194, 255).withOpacity(0.6),
@@ -107,6 +61,7 @@ class MiddleSection extends StatelessWidget {
                   side: BorderSide(color: Colors.black.withOpacity(0.7)),
                 ),
               ),
+              child: const Text('Add Note'),
             ),
           ),
         ],

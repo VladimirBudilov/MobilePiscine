@@ -27,7 +27,7 @@ class DiaryApp extends StatelessWidget {
       title: 'Diary App',
       initialRoute: '/',
       routes: {
-        '/': (context) => StartPage(),
+        '/': (context) => const StartPage(),
         '/login': (context) => LoginPage(),
         '/diary': (context) => DiaryPage(
               authService: authService,

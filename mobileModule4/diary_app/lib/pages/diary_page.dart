@@ -7,16 +7,17 @@ import '../services/auth_service.dart';
 import '../widgets/sections/top_section.dart';
 import '../widgets/sections/middle_section.dart';
 import '../widgets/sections/bottom_section.dart';
+import '../pages/agenda_page.dart';
 
 class DiaryPage extends StatefulWidget {
   final AuthService authService;
   final DiaryService diaryService;
 
   const DiaryPage({
-    Key? key,
+    super.key,
     required this.authService,
     required this.diaryService,
-  }) : super(key: key);
+  });
 
   @override
   _DiaryPageState createState() => _DiaryPageState();
@@ -67,7 +68,7 @@ class _DiaryPageState extends State<DiaryPage> {
   void _createEntry() async {
     final newEntry = await showDialog<DiaryEntry>(
       context: context,
-      builder: (context) => CreateEntryDialog(),
+      builder: (context) => const CreateEntryDialog(),
     );
 
     if (newEntry != null) {
@@ -116,7 +117,7 @@ class _DiaryPageState extends State<DiaryPage> {
           ),
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/background_main.webp"),
+              image: const AssetImage("assets/background_main.webp"),
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(
                 Colors.black.withOpacity(0.4),
@@ -136,7 +137,12 @@ class _DiaryPageState extends State<DiaryPage> {
                     child: TopSection(
                       userName: _userName,
                       onLogout: _logout,
-                      onNavigateToCalendar: () => print('Navigate to Calendar'),
+                      onNavigateToCalendar: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => AgendaPage()),
+                        );
+                      },
                     ),
                   ),
                   MiddleSection(

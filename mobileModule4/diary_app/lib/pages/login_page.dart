@@ -21,7 +21,7 @@ class LoginPage extends StatelessWidget {
                   Navigator.pushReplacementNamed(context, '/diary');
                 }
               },
-              child: const Text('Login with Google'),
+              child: const Text('Login with Google', style: TextStyle(fontSize: 16)),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -30,7 +30,7 @@ class LoginPage extends StatelessWidget {
                   Navigator.pushReplacementNamed(context, '/diary');
                 }
               },
-              child: const Text('Login with GitHub'),
+              child: const Text('Login with GitHub', style: TextStyle(fontSize: 16)),
             ),
           ],
         ),
