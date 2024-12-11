@@ -15,6 +15,8 @@ class CurrentWeatherTab extends ConsumerWidget {
     return currentWeather.when(
         data: (weather) {
           if (weather == null) {
+            Future.microtask(
+                () => ref.read(appStatusProvider.notifier).setErrorStatus(''));
             return const ErrorMessage();
           }
           

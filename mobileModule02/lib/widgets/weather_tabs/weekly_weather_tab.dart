@@ -16,6 +16,8 @@ class WeeklyWeatherTab extends ConsumerWidget {
     return weeklyWeather.when(
       data: (weeklyData) {
         if (weeklyData.isEmpty) {
+          Future.microtask(
+                () => ref.read(appStatusProvider.notifier).setErrorStatus(''));
           return const ErrorMessage();
         }
 

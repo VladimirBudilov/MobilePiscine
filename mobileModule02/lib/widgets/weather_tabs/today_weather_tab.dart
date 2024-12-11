@@ -16,6 +16,8 @@ class TodayWeatherTab extends ConsumerWidget {
     return hourlyWeather.when(
       data: (hourlyData) {
         if (hourlyData.isEmpty) {
+          Future.microtask(
+                () => ref.read(appStatusProvider.notifier).setErrorStatus(''));
           return const ErrorMessage();
         }
 
