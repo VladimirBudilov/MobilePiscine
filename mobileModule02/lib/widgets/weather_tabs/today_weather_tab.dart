@@ -40,7 +40,7 @@ class TodayWeatherTab extends ConsumerWidget {
                       DataColumn(label: Text('Time')),
                       DataColumn(label: Text('Temp(°C)')),
                       DataColumn(label: Text('Condition')),
-                      DataColumn(label: Text('Wind')),
+                      DataColumn(label: Text('Wind(km/h)')),
                     ],
                     rows: hourlyData.map((hourWeather) {
                       final formattedTime =
