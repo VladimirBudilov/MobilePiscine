@@ -1,5 +1,6 @@
 import 'package:diary_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../models/diary_entry.dart';
 import '../services/diary_service.dart';
 
@@ -9,7 +10,8 @@ class ViewEntryDialog extends StatelessWidget {
   final AuthService authService;
   final VoidCallback onUpdate;
 
-  ViewEntryDialog({
+  const ViewEntryDialog({
+    super.key,
     required this.entry,
     required this.diaryService,
     required this.authService,
@@ -18,6 +20,8 @@ class ViewEntryDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final formattedDate = DateFormat('dd MMM yyyy').format(DateTime.parse(entry.date));
+
     return AlertDialog(
       title: Text(entry.title),
       content: Column(
@@ -25,22 +29,22 @@ class ViewEntryDialog extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Date: ${entry.date}',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            'Date: $formattedDate',
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             'Mood: ${entry.mood}',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(entry.description),
         ],
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Close'),
+          child: const Text('Close'),
         ),
         TextButton(
           onPressed: () async {
@@ -48,16 +52,16 @@ class ViewEntryDialog extends StatelessWidget {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text('Confirm Deletion'),
-                  content: Text('Are you sure you want to delete this entry?'),
+                  title: const Text('Confirm Deletion'),
+                  content: const Text('Are you sure you want to delete this entry?'),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context, false),
-                      child: Text('Cancel'),
+                      child: const Text('Cancel'),
                     ),
                     TextButton(
                       onPressed: () => Navigator.pop(context, true),
-                      child: Text('Delete'),
+                      child: const Text('Delete'),
                     ),
                   ],
                 );
@@ -65,18 +69,18 @@ class ViewEntryDialog extends StatelessWidget {
             );
 
             if (confirm == true) {
-              diaryService.deleteEntry(
+              await diaryService.deleteEntry(
                 authService.currentUser!.uid,
                 entry.id,
               );
-               onUpdate();
+              onUpdate();
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Entry deleted successfully')),
+                const SnackBar(content: Text('Entry deleted successfully')),
               );
             }
           },
-          child: Text('Delete'),
+          child: const Text('Delete'),
         ),
       ],
     );

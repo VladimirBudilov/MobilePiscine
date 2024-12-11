@@ -1,8 +1,11 @@
+import 'package:diary_app/services/mood_icon_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/diary_entry.dart';
 
 class CreateEntryDialog extends StatefulWidget {
+  const CreateEntryDialog({super.key});
+
   @override
   _CreateEntryDialogState createState() => _CreateEntryDialogState();
 }
@@ -12,7 +15,7 @@ class _CreateEntryDialogState extends State<CreateEntryDialog> {
   String _title = '';
   String _description = '';
   String _mood = 'Happy';
-  final List<String> _moods = ['Happy', 'Sad', 'Angry', 'Excited', 'Calm'];
+  final List<String> _moods = MoodIconService.moods;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +23,7 @@ class _CreateEntryDialogState extends State<CreateEntryDialog> {
     final email = user?.email ?? 'Unknown';
 
     return AlertDialog(
-      title: Text('Create Entry'),
+      title: const Text('Create Entry'),
       content: Form(
         key: _formKey,
         child: Column(
@@ -28,7 +31,7 @@ class _CreateEntryDialogState extends State<CreateEntryDialog> {
           children: [
             TextFormField(
               maxLength: 50,
-              decoration: InputDecoration(labelText: 'Title'),
+              decoration: const InputDecoration(labelText: 'Title'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Title is required';
@@ -39,7 +42,7 @@ class _CreateEntryDialogState extends State<CreateEntryDialog> {
             ),
             TextFormField(
               maxLength: 500,
-              decoration: InputDecoration(labelText: 'Description'),
+              decoration: const InputDecoration(labelText: 'Description'),
               maxLines: 5,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -51,7 +54,7 @@ class _CreateEntryDialogState extends State<CreateEntryDialog> {
             ),
             DropdownButtonFormField<String>(
               value: _mood,
-              decoration: InputDecoration(labelText: 'Mood'),
+              decoration: const InputDecoration(labelText: 'Mood'),
               items: _moods.map((String mood) {
                 return DropdownMenuItem<String>(
                   value: mood,
@@ -70,7 +73,7 @@ class _CreateEntryDialogState extends State<CreateEntryDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
         ElevatedButton(
           onPressed: () {
@@ -86,7 +89,7 @@ class _CreateEntryDialogState extends State<CreateEntryDialog> {
               Navigator.pop(context, newEntry);
             }
           },
-          child: Text('Add'),
+          child: const Text('Add'),
         ),
       ],
     );

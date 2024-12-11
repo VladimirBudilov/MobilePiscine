@@ -19,13 +19,15 @@ class DiaryApp extends StatelessWidget {
   final AuthService authService = AuthService();
   final DiaryService diaryService = DiaryService();
 
+  DiaryApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Diary App',
       initialRoute: '/',
       routes: {
-        '/': (context) => StartPage(),
+        '/': (context) => const StartPage(),
         '/login': (context) => LoginPage(),
         '/diary': (context) => DiaryPage(
               authService: authService,
