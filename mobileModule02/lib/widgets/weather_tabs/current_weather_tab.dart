@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/weather_providers.dart';
 import '../../providers/location_providers.dart';
+import '../error_message.dart';
 
 class CurrentWeatherTab extends ConsumerWidget {
   const CurrentWeatherTab({super.key});
@@ -14,13 +15,9 @@ class CurrentWeatherTab extends ConsumerWidget {
     return currentWeather.when(
         data: (weather) {
           if (weather == null) {
-            return Center(
-              child: Text(
-                "Invalid City was selected. Please select a valid city.",
-                style: TextStyle(fontSize: 16),
-              ),
-            );
+            return const ErrorMessage();
           }
+          
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

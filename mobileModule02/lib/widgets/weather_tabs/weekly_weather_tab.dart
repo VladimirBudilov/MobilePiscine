@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../providers/weather_providers.dart';
 import '../../providers/location_providers.dart';
+import '../error_message.dart';
 
 class WeeklyWeatherTab extends ConsumerWidget {
   const WeeklyWeatherTab({super.key});
@@ -15,12 +16,7 @@ class WeeklyWeatherTab extends ConsumerWidget {
     return weeklyWeather.when(
       data: (weeklyData) {
         if (weeklyData.isEmpty) {
-          return Center(
-            child: Text(
-              "Invalid City was selected. Please select a valid city.",
-              style: TextStyle(fontSize: 16),
-            ),
-          );
+          return const ErrorMessage();
         }
 
         return Column(
@@ -76,4 +72,3 @@ class WeeklyWeatherTab extends ConsumerWidget {
     );
   }
 }
-
