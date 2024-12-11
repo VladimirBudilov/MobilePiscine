@@ -113,27 +113,27 @@ class WeeklyWeatherTab extends ConsumerWidget {
                                   formattedDay,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 14,
+                                    fontSize: 18,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
                                   'Min: ${daily.temperatureMin}°C',
-                                  style: TextStyle(fontSize: 12),
+                                  style: TextStyle(fontSize: 16),
                                 ),
                                 Text(
                                   'Max: ${daily.temperatureMax}°C',
-                                  style: TextStyle(fontSize: 12),
+                                  style: TextStyle(fontSize: 16),
                                 ),
                                 const SizedBox(height: 4),
                                 Image.network(
                                   getWeatherIcon(daily.weatherCode),
-                                  width: 40,
-                                  height: 40,
+                                  width: 50,
+                                  height: 50,
                                   errorBuilder: (context, error, stackTrace) =>
                                       Icon(Icons.cloud,
-                                          color: Colors.black54, size: 40),
+                                          color: Colors.black54, size: 50),
                                 ),
                               ],
                             ),

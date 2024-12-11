@@ -29,7 +29,7 @@ class TodayWeatherTab extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   '${selectedCity?.name ?? "Unknown City"}, ${selectedCity?.region ?? ""}, ${selectedCity?.country ?? ""}',
@@ -92,7 +92,7 @@ class TodayWeatherTab extends ConsumerWidget {
                 ),
                 const SizedBox(height: 16),
                 SizedBox(
-                  height: 120,
+                  height: 160,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: hourlyData.length,
@@ -129,6 +129,14 @@ class TodayWeatherTab extends ConsumerWidget {
                             const SizedBox(height: 8),
                             Text(
                               '${hourWeather.temperature}°C',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black54),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              '${hourWeather.windSpeed} km/h',
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
