@@ -1,3 +1,4 @@
+import 'package:advanced_weather_app/widgets/error_mesage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/weather_providers.dart';
@@ -16,14 +17,12 @@ class CurrentWeatherTab extends ConsumerWidget {
       padding: const EdgeInsets.all(16.0),
       child: currentWeather.when(
         data: (weather) {
+          if (weather != null) {
+            Future.microtask(
+                () => ref.read(appStatusProvider.notifier).setErrorStatus(''));
+          }
           if (weather == null) {
-            return Center(
-              child: Text(
-                "Invalid City was selected. Please select a valid city.",
-                style: TextStyle(fontSize: 16, color: Colors.red),
-                textAlign: TextAlign.center,
-              ),
-            );
+            return const ErrorMessage();
           }
           return SingleChildScrollView(
             child: Column(

@@ -5,21 +5,27 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "advanced_weather_app",
+            "name": "mobileModule03",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "advanced_weather_app (profile mode)",
+            "name": "mobileModule03 (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "advanced_weather_app (release mode)",
+            "name": "mobileModule03 (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
+        },
+        {
+            "name": "advanced_weather_app",
+            "cwd": "advanced_weather_app",
+            "request": "launch",
+            "type": "dart"
         }
     ]
 }

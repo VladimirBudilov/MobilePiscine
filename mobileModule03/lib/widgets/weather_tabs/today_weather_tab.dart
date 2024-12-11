@@ -6,6 +6,7 @@ import '../../providers/weather_providers.dart';
 import '../../providers/location_providers.dart';
 import '../../utils/weather_icons.dart';
 import '../../models/weather/hourly_weather.dart';
+import '../error_mesage.dart';
 
 class TodayWeatherTab extends ConsumerWidget {
   const TodayWeatherTab({super.key});
@@ -17,13 +18,11 @@ class TodayWeatherTab extends ConsumerWidget {
 
     return hourlyWeather.when(
       data: (hourlyData) {
+        Future.microtask(
+            () => ref.read(appStatusProvider.notifier).setErrorStatus(''));
+
         if (hourlyData.isEmpty) {
-          return Center(
-            child: Text(
-              "Invalid City was selected. Please select a valid city.",
-              style: TextStyle(fontSize: 16, color: Colors.red),
-            ),
-          );
+          return const ErrorMessage();
         }
 
         return SingleChildScrollView(

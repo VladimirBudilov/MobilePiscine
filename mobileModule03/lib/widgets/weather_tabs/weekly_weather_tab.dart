@@ -5,6 +5,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../providers/weather_providers.dart';
 import '../../providers/location_providers.dart';
 import '../../utils/weather_icons.dart';
+import '../error_mesage.dart';
 
 class WeeklyWeatherTab extends ConsumerWidget {
   const WeeklyWeatherTab({super.key});
@@ -16,15 +17,11 @@ class WeeklyWeatherTab extends ConsumerWidget {
 
     return weeklyWeather.when(
       data: (weeklyData) {
+        Future.microtask(
+            () => ref.read(appStatusProvider.notifier).setErrorStatus(''));
         if (weeklyData.isEmpty) {
-          return Center(
-            child: Text(
-              "Invalid City was selected. Please select a valid city.",
-              style: TextStyle(fontSize: 16),
-            ),
-          );
+          return const ErrorMessage();
         }
-
         return Container(
             alignment: Alignment.center,
             child: SingleChildScrollView(
