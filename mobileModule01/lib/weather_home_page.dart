@@ -38,28 +38,33 @@ class _WeatherHomePageState extends State<WeatherHomePage> with SingleTickerProv
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: TextField(
-          onSubmitted: (text) {
-            _updateText(text);
-          },
-          decoration: InputDecoration(
-            hintText: 'Search location...',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide.none,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: SafeArea(
+          child: AppBar(
+            title: TextField(
+              onSubmitted: (text) {
+                _updateText(text);
+              },
+              decoration: InputDecoration(
+                hintText: 'Search location...',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide.none,
+                ),
+                filled: true,
+                fillColor: Colors.white,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
+              ),
             ),
-            filled: true,
-            fillColor: Colors.white,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.my_location),
+                onPressed: _useGeolocation,
+              ),
+            ],
           ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.my_location),
-            onPressed: _useGeolocation,
-          ),
-        ],
       ),
       body: TabBarView(
         controller: _tabController,
